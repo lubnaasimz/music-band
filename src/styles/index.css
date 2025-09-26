@@ -486,8 +486,8 @@ body {
 }
 
 /* Import component styles */
-@import url('./styles/styles.css');
-@import url('./styles/additional-styles.css');
+@import url('./components/styles.css');
+@import url('./components/additional-styles.css');
 
 .loading {
   text-align: center;

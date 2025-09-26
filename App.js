@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/common/Navbar';
-import ShowsList from './components/pages/ShowsList';
-import ShowDetail from './components/pages/ShowDetail';
-import BandDetail from './components/pages/BandDetail';
-import VenueDetail from './components/pages/VenueDetail';
-import CreateBand from './components/forms/CreateBand';
-import BackendStatus from './components/common/BackendStatus';
-import ParticleBackground from './components/common/ParticleBackground';
+import Navbar from './components/Navbar';
+import ShowsList from './components/ShowsList';
+import ShowDetail from './components/ShowDetail';
+import BandDetail from './components/BandDetail';
+import VenueDetail from './components/VenueDetail';
+import CreateBand from './components/CreateBand';
+import BackendStatus from './components/BackendStatus';
+import ParticleBackground from './components/ParticleBackground';
 
 function App() {
   return (
