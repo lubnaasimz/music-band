@@ -71,6 +71,20 @@ def get_band(band_id):
 @bands_bp.route('/', methods=['POST'])
 def create_band():
     data = request.get_json()
+    
+    # Validation
+    if not data.get('name') or len(data.get('name').strip()) < 2:
+        return jsonify({'error': 'Band name must be at least 2 characters'}), 400
+    
+    if not data.get('genre'):
+        return jsonify({'error': 'Genre is required'}), 400
+    
+    if not data.get('description') or len(data.get('description').strip()) < 10:
+        return jsonify({'error': 'Description must be at least 10 characters'}), 400
+    
+    if not data.get('formed_year') or not isinstance(data.get('formed_year'), int) or data.get('formed_year') < 1900:
+        return jsonify({'error': 'Formation year must be a valid year after 1900'}), 400
+    
     band = Band(
         name=data.get('name'),
         genre=data.get('genre'),
@@ -201,6 +215,20 @@ def get_review(review_id):
 @reviews_bp.route('/', methods=['POST'])
 def create_review():
     data = request.get_json()
+    
+    # Validation
+    if not data.get('rating') or not isinstance(data.get('rating'), int) or data.get('rating') < 1 or data.get('rating') > 5:
+        return jsonify({'error': 'Rating must be an integer between 1 and 5'}), 400
+    
+    if not data.get('comment') or len(data.get('comment').strip()) < 10:
+        return jsonify({'error': 'Comment must be at least 10 characters'}), 400
+    
+    if not data.get('user_id') or not isinstance(data.get('user_id'), int):
+        return jsonify({'error': 'Valid user_id is required'}), 400
+    
+    if not data.get('show_id') or not isinstance(data.get('show_id'), int):
+        return jsonify({'error': 'Valid show_id is required'}), 400
+    
     review = Review(
         rating=data.get('rating'),
         comment=data.get('comment'),
@@ -211,10 +239,17 @@ def create_review():
     db.session.commit()
     return jsonify(review.to_dict()), 201
 
-@reviews_bp.route('/<int:review_id>', methods=['PATCH'])
+@reviews_bp.route('/<int:review_id>', methods=['PATCH', 'PUT'])
 def update_review(review_id):
     review = Review.query.get_or_404(review_id)
     data = request.get_json()
+    
+    # Validation for PUT/PATCH
+    if 'rating' in data and (not isinstance(data['rating'], int) or data['rating'] < 1 or data['rating'] > 5):
+        return jsonify({'error': 'Rating must be an integer between 1 and 5'}), 400
+    
+    if 'comment' in data and len(data['comment'].strip()) < 10:
+        return jsonify({'error': 'Comment must be at least 10 characters'}), 400
     
     for key, value in data.items():
         if hasattr(review, key):
