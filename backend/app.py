@@ -25,6 +25,10 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(musicians_bp)
 
+    @app.route('/')
+    def home():
+        return {'message': 'Music Band API is running'}
+
     return app
 
 app = create_app()
