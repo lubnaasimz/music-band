@@ -28,8 +28,8 @@ const ReviewForm = ({ showId, onReviewAdded, existingReview, onReviewUpdated }) 
   const handleSubmit = async (values, { setSubmitting, resetForm, setStatus }) => {
     try {
       const url = isEditing 
-        ? `http://127.0.0.1:5000/api/reviews/${existingReview.id}`
-        : 'http://127.0.0.1:5000/api/reviews/';
+        ? `https://music-band-jekc.onrender.com/api/reviews/${existingReview.id}`
+        : 'https://music-band-jekc.onrender.com/api/reviews/';
       
       const method = isEditing ? 'PATCH' : 'POST';
       const body = isEditing 

@@ -15,7 +15,7 @@ const ShowDetail = () => {
 
   const fetchShowDetails = async () => {
     try {
-      const showResponse = await fetch(`http://127.0.0.1:5000/api/shows/${id}`);
+      const showResponse = await fetch(`https://music-band-jekc.onrender.com/api/shows/${id}`);
       
       if (!showResponse.ok) throw new Error('Failed to fetch show details');
       
@@ -41,7 +41,7 @@ const ShowDetail = () => {
 
   const handleReviewDeleted = async (reviewId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/reviews/${reviewId}`, {
+      const response = await fetch(`https://music-band-jekc.onrender.com/api/reviews/${reviewId}`, {
         method: 'DELETE',
       });
       

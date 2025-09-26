@@ -18,7 +18,7 @@ const ShowsList = () => {
 
   const fetchShows = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/shows/');
+      const response = await fetch('https://music-band-jekc.onrender.com/api/shows/');
       if (!response.ok) throw new Error('Failed to fetch shows');
       const data = await response.json();
       setShows(data);
