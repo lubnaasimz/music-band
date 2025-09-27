@@ -29,13 +29,17 @@ const CreateBand = () => {
         body: JSON.stringify(values),
       });
 
-      if (!response.ok) throw new Error('Failed to create band');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Failed to create band');
+      }
       
       const newBand = await response.json();
       setStatus({ success: `Band "${newBand.name}" created successfully!` });
       resetForm();
     } catch (error) {
-      setStatus({ error: error.message });
+      console.error('Create band error:', error);
+      setStatus({ error: error.message || 'Failed to create band' });
     } finally {
       setSubmitting(false);
     }
