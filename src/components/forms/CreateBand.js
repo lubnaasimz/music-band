@@ -26,20 +26,38 @@ const CreateBand = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          name: values.name,
+          genre: values.genre,
+          description: values.description,
+          formed_year: parseInt(values.formed_year)
+        }),
       });
 
       const responseText = await response.text();
+      console.log('Response status:', response.status);
+      console.log('Response text:', responseText);
       
       if (!response.ok) {
-        throw new Error(responseText || `HTTP ${response.status}: Failed to create band`);
+        let errorMsg = 'Failed to create band';
+        try {
+          const errorData = JSON.parse(responseText);
+          errorMsg = errorData.error || errorMsg;
+        } catch {
+          errorMsg = responseText || errorMsg;
+        }
+        throw new Error(errorMsg);
+      }
+      
+      if (!responseText || responseText.trim() === '') {
+        throw new Error('Server returned empty response');
       }
       
       let newBand;
       try {
         newBand = JSON.parse(responseText);
       } catch (parseError) {
-        throw new Error('Invalid response from server');
+        throw new Error(`Invalid JSON response: ${responseText}`);
       }
       
       setStatus({ success: `Band "${newBand.name}" created successfully!` });

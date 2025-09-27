@@ -70,30 +70,41 @@ def get_band(band_id):
 
 @bands_bp.route('/', methods=['POST'])
 def create_band():
-    data = request.get_json()
-    
-    # Validation
-    if not data.get('name') or len(data.get('name').strip()) < 2:
-        return jsonify({'error': 'Band name must be at least 2 characters'}), 400
-    
-    if not data.get('genre'):
-        return jsonify({'error': 'Genre is required'}), 400
-    
-    if not data.get('description') or len(data.get('description').strip()) < 10:
-        return jsonify({'error': 'Description must be at least 10 characters'}), 400
-    
-    if not data.get('formed_year') or not isinstance(data.get('formed_year'), int) or data.get('formed_year') < 1900:
-        return jsonify({'error': 'Formation year must be a valid year after 1900'}), 400
-    
-    band = Band(
-        name=data.get('name'),
-        genre=data.get('genre'),
-        description=data.get('description'),
-        formed_year=data.get('formed_year')
-    )
-    db.session.add(band)
-    db.session.commit()
-    return jsonify(band.to_dict()), 201
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        
+        # Validation
+        if not data.get('name') or len(str(data.get('name')).strip()) < 2:
+            return jsonify({'error': 'Band name must be at least 2 characters'}), 400
+        
+        if not data.get('genre'):
+            return jsonify({'error': 'Genre is required'}), 400
+        
+        if not data.get('description') or len(str(data.get('description')).strip()) < 10:
+            return jsonify({'error': 'Description must be at least 10 characters'}), 400
+        
+        formed_year = data.get('formed_year')
+        if not formed_year or int(formed_year) < 1900:
+            return jsonify({'error': 'Formation year must be a valid year after 1900'}), 400
+        
+        band = Band(
+            name=str(data.get('name')).strip(),
+            genre=str(data.get('genre')).strip(),
+            description=str(data.get('description')).strip(),
+            formed_year=int(formed_year)
+        )
+        
+        db.session.add(band)
+        db.session.commit()
+        
+        return jsonify(band.to_dict()), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
 
 @bands_bp.route('/<int:band_id>', methods=['PATCH'])
 def update_band(band_id):
