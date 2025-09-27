@@ -21,7 +21,7 @@ const CreateBand = () => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm, setStatus }) => {
     try {
-      const response = await fetch('https://music-band-1.onrender.com/api/bands/', {
+      const response = await fetch('http://127.0.0.1:5000/api/bands/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,17 +29,24 @@ const CreateBand = () => {
         body: JSON.stringify(values),
       });
 
+      const responseText = await response.text();
+      
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Failed to create band');
+        throw new Error(responseText || `HTTP ${response.status}: Failed to create band`);
       }
       
-      const newBand = await response.json();
+      let newBand;
+      try {
+        newBand = JSON.parse(responseText);
+      } catch (parseError) {
+        throw new Error('Invalid response from server');
+      }
+      
       setStatus({ success: `Band "${newBand.name}" created successfully!` });
       resetForm();
     } catch (error) {
       console.error('Create band error:', error);
-      setStatus({ error: error.message || 'Failed to create band' });
+      setStatus({ error: error.message || 'Network error - please try again' });
     } finally {
       setSubmitting(false);
     }

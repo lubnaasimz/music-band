@@ -1,5 +1,5 @@
 // API utility functions
-const API_BASE_URL = 'https://music-band-1.onrender.com';
+const API_BASE_URL = 'http://127.0.0.1:5000';
 
 export const api = {
   // Test backend connectivity
