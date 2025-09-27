@@ -21,7 +21,7 @@ const CreateBand = () => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm, setStatus }) => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/bands/', {
+      const response = await fetch('https://music-band-1.onrender.com/api/bands/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
