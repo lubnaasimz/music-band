@@ -34,31 +34,12 @@ const CreateBand = () => {
         }),
       });
 
-      const responseText = await response.text();
-      console.log('Response status:', response.status);
-      console.log('Response text:', responseText);
-      
       if (!response.ok) {
-        let errorMsg = 'Failed to create band';
-        try {
-          const errorData = JSON.parse(responseText);
-          errorMsg = errorData.error || errorMsg;
-        } catch {
-          errorMsg = responseText || errorMsg;
-        }
-        throw new Error(errorMsg);
+        const errorText = await response.text();
+        throw new Error(errorText || `Failed to create band (${response.status})`);
       }
       
-      if (!responseText || responseText.trim() === '') {
-        throw new Error('Server returned empty response');
-      }
-      
-      let newBand;
-      try {
-        newBand = JSON.parse(responseText);
-      } catch (parseError) {
-        throw new Error(`Invalid JSON response: ${responseText}`);
-      }
+      const newBand = await response.json();
       
       setStatus({ success: `Band "${newBand.name}" created successfully!` });
       resetForm();

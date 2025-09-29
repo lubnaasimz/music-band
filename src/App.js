@@ -8,6 +8,8 @@ import VenueDetail from './components/pages/VenueDetail';
 import CreateBand from './components/forms/CreateBand';
 import BackendStatus from './components/common/BackendStatus';
 import ParticleBackground from './components/common/ParticleBackground';
+import './styles/professional.css';
+import './styles/enhanced.css';
 
 function App() {
   return (

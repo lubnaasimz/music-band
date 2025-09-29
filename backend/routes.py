@@ -104,7 +104,8 @@ def create_band():
         
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': f'Server error: {str(e)}'}), 500
+        print(f'Band creation error: {str(e)}')
+        return jsonify({'error': 'Failed to create band. Please try again.'}), 500
 
 @bands_bp.route('/<int:band_id>', methods=['PATCH'])
 def update_band(band_id):
