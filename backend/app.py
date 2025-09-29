@@ -27,15 +27,25 @@ def create_app():
 
     @app.route('/')
     def home():
-        return {'message': 'Music Band API is running'}
+        return {'message': 'Music Band API is running', 'status': 'healthy'}
+    
+    @app.route('/health')
+    def health():
+        return {'status': 'healthy', 'database': 'connected'}, 200
 
     return app
 
 app = create_app()
 
+# Initialize database on startup
+with app.app_context():
+    try:
+        db.create_all()
+        print("Database initialized successfully")
+    except Exception as e:
+        print(f"Database initialization error: {e}")
+
 if __name__ == '__main__':
     import os
-    with app.app_context():
-        db.create_all()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)

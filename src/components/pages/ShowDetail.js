@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReviewForm from '../forms/ReviewForm';
+import apiWithFallback from '../../utils/apiWithFallback';
 
 const ShowDetail = () => {
   const { id } = useParams();
@@ -15,13 +16,10 @@ const ShowDetail = () => {
 
   const fetchShowDetails = async () => {
     try {
-      const showResponse = await fetch(`https://music-band-jekc.onrender.com/api/shows/${id}`);
-      
-      if (!showResponse.ok) throw new Error('Failed to fetch show details');
-      
-      const showData = await showResponse.json();
+      const showData = await apiWithFallback.getShow(id);
       setShow(showData);
       setReviews(showData.reviews || []);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {

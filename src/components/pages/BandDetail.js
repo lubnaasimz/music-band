@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
+import apiWithFallback from '../../utils/apiWithFallback';
 
 const BandDetail = () => {
   const { id } = useParams();
@@ -14,10 +15,9 @@ const BandDetail = () => {
 
   const fetchBandDetails = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/bands/${id}`);
-      if (!response.ok) throw new Error('Failed to fetch band details');
-      const data = await response.json();
+      const data = await apiWithFallback.getBand(id);
       setBand(data);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {

@@ -98,6 +98,29 @@ const apiWithFallback = {
     }
   },
 
+  getBand: async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/bands/${id}`);
+      if (!response.ok) throw new Error('Backend unavailable');
+      return await response.json();
+    } catch (error) {
+      console.log('Using fallback data for band details');
+      const allBands = [...mockBands, ...createdBands];
+      return allBands.find(band => band.id === parseInt(id)) || allBands[0];
+    }
+  },
+
+  getShow: async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/shows/${id}`);
+      if (!response.ok) throw new Error('Backend unavailable');
+      return await response.json();
+    } catch (error) {
+      console.log('Using fallback data for show details');
+      return mockShows.find(show => show.id === parseInt(id)) || mockShows[0];
+    }
+  },
+
   createBand: async (bandData) => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/bands/`, {
