@@ -21,6 +21,12 @@ const Navbar = () => {
             Shows
           </Link>
           <Link 
+            to="/bands" 
+            className={`nav-link ${isActive('/bands') ? 'active' : ''}`}
+          >
+            Bands
+          </Link>
+          <Link 
             to="/create-band" 
             className={`nav-link ${isActive('/create-band') ? 'active' : ''}`}
           >

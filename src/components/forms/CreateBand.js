@@ -43,6 +43,11 @@ const CreateBand = () => {
       
       setStatus({ success: `Band "${newBand.name}" created successfully!` });
       resetForm();
+      
+      // Redirect to bands page after 2 seconds
+      setTimeout(() => {
+        window.location.href = '/bands';
+      }, 2000);
     } catch (error) {
       console.error('Create band error:', error);
       setStatus({ error: error.message || 'Network error - please try again' });
