@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
+import apiWithFallback from '../../utils/apiWithFallback';
 
 const BandsList = () => {
   const [bands, setBands] = useState([]);
@@ -13,10 +14,9 @@ const BandsList = () => {
 
   const fetchBands = async () => {
     try {
-      const response = await fetch('https://music-band-1.onrender.com/api/bands/');
-      if (!response.ok) throw new Error('Failed to fetch bands');
-      const data = await response.json();
+      const data = await apiWithFallback.getBands();
       setBands(data);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {

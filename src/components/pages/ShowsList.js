@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import SearchFilter from '../forms/SearchFilter';
 import LoadingSpinner from '../common/LoadingSpinner';
+import apiWithFallback from '../../utils/apiWithFallback';
 
 const ShowsList = () => {
   const [shows, setShows] = useState([]);
@@ -18,10 +19,9 @@ const ShowsList = () => {
 
   const fetchShows = async () => {
     try {
-      const response = await fetch('https://music-band-1.onrender.com/api/shows/');
-      if (!response.ok) throw new Error('Failed to fetch shows');
-      const data = await response.json();
+      const data = await apiWithFallback.getShows();
       setShows(data);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {

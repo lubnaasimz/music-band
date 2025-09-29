@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import apiWithFallback from '../../utils/apiWithFallback';
 
 const CreateBand = () => {
   const validationSchema = Yup.object({
@@ -21,25 +22,14 @@ const CreateBand = () => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm, setStatus }) => {
     try {
-      const response = await fetch('https://music-band-1.onrender.com/api/bands/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: values.name,
-          genre: values.genre,
-          description: values.description,
-          formed_year: parseInt(values.formed_year)
-        }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || `Failed to create band (${response.status})`);
-      }
+      const bandData = {
+        name: values.name,
+        genre: values.genre,
+        description: values.description,
+        formed_year: parseInt(values.formed_year)
+      };
       
-      const newBand = await response.json();
+      const newBand = await apiWithFallback.createBand(bandData);
       
       setStatus({ success: `Band "${newBand.name}" created successfully!` });
       resetForm();
@@ -50,7 +40,7 @@ const CreateBand = () => {
       }, 2000);
     } catch (error) {
       console.error('Create band error:', error);
-      setStatus({ error: error.message || 'Network error - please try again' });
+      setStatus({ error: error.message || 'Failed to create band' });
     } finally {
       setSubmitting(false);
     }
