@@ -47,16 +47,23 @@ const CreateBand = () => {
   };
 
   return (
-    <>
-      <Link to="/" className="back-link">← Back to Shows</Link>
+    <div className="animate-fade-in">
+      <Link to="/" className="inline-flex items-center space-x-2 text-white hover:text-blue-200 transition-colors mb-8">
+        <span>←</span>
+        <span>Back to Shows</span>
+      </Link>
       
-      <div className="hero-section">
-        <h1 className="hero-title">🎸 Create New Band</h1>
-        <p className="hero-subtitle">Add a new band to our music platform</p>
+      <div className="text-center py-12 mb-8">
+        <h1 className="text-5xl font-black text-white mb-4">
+          <span className="text-6xl">🎸</span> Create New Band
+        </h1>
+        <p className="text-xl text-white/80 max-w-2xl mx-auto">
+          Add a new band to our music platform and share their story with the world
+        </p>
       </div>
 
-      <div className="show-card">
-        <div className="show-card-content">
+      <div className="max-w-2xl mx-auto">
+        <div className="card p-8">
           <Formik
             initialValues={{
               name: '',
@@ -68,65 +75,76 @@ const CreateBand = () => {
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, status }) => (
-              <Form>
-                <div className="form-group">
-                  <label htmlFor="name">Band Name</label>
+              <Form className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Band Name
+                  </label>
                   <Field
                     type="text"
                     id="name"
                     name="name"
                     placeholder="Enter band name"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   />
-                  <ErrorMessage name="name" component="div" className="error-message" />
+                  <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="genre">Genre</label>
-                  <Field as="select" id="genre" name="genre">
+                <div>
+                  <label htmlFor="genre" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Genre
+                  </label>
+                  <Field as="select" id="genre" name="genre" className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                     <option value="">Select a genre</option>
-                    <option value="Rock">Rock</option>
-                    <option value="Jazz">Jazz</option>
-                    <option value="Electronic">Electronic</option>
-                    <option value="Pop">Pop</option>
-                    <option value="Hip Hop">Hip Hop</option>
-                    <option value="Classical">Classical</option>
-                    <option value="Country">Country</option>
-                    <option value="Indie">Indie</option>
+                    <option value="Rock">🎸 Rock</option>
+                    <option value="Jazz">🎷 Jazz</option>
+                    <option value="Electronic">🎧 Electronic</option>
+                    <option value="Pop">🎵 Pop</option>
+                    <option value="Hip Hop">🎤 Hip Hop</option>
+                    <option value="Classical">🎼 Classical</option>
+                    <option value="Country">🤠 Country</option>
+                    <option value="Indie">🎤 Indie</option>
                   </Field>
-                  <ErrorMessage name="genre" component="div" className="error-message" />
+                  <ErrorMessage name="genre" component="div" className="text-red-500 text-sm mt-1" />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="formed_year">Formation Year</label>
+                <div>
+                  <label htmlFor="formed_year" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Formation Year
+                  </label>
                   <Field
                     type="number"
                     id="formed_year"
                     name="formed_year"
                     placeholder="e.g., 2020"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   />
-                  <ErrorMessage name="formed_year" component="div" className="error-message" />
+                  <ErrorMessage name="formed_year" component="div" className="text-red-500 text-sm mt-1" />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="description">Description</label>
+                <div>
+                  <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Description
+                  </label>
                   <Field
                     as="textarea"
                     id="description"
                     name="description"
                     rows="4"
                     placeholder="Tell us about this band..."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
                   />
-                  <ErrorMessage name="description" component="div" className="error-message" />
+                  <ErrorMessage name="description" component="div" className="text-red-500 text-sm mt-1" />
                 </div>
 
                 {status?.error && (
-                  <div className="error-message" style={{ marginBottom: '15px' }}>
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl">
                     {status.error}
                   </div>
                 )}
 
                 {status?.success && (
-                  <div style={{ color: 'var(--success)', marginBottom: '15px', fontWeight: '600' }}>
+                  <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl font-semibold">
                     {status.success}
                   </div>
                 )}
@@ -134,17 +152,23 @@ const CreateBand = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn"
-                  style={{ width: '100%' }}
+                  className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Creating Band...' : 'Create Band'}
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <span>Creating Band...</span>
+                    </div>
+                  ) : (
+                    'Create Band'
+                  )}
                 </button>
               </Form>
             )}
           </Formik>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

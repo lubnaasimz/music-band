@@ -86,50 +86,41 @@ const ShowsList = () => {
   };
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <div className="error">Error: {error}</div>;
+  if (error) return <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">Error: {error}</div>;
 
   return (
-    <>
-      <div className="floating-elements">
-        {[...Array(8)].map((_, i) => (
-          <div 
-            key={i}
-            className="floating-note"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 20}s`,
-              animationDuration: `${15 + Math.random() * 10}s`
-            }}
-          >
-            {['🎵', '🎶', '🎼', '🎤', '🎸', '🎷', '🎹', '🥁'][i]}
-          </div>
-        ))}
-      </div>
-
-      <div className="hero-section">
-        <h1 className="hero-title">🎵 BandReviews</h1>
-        <p className="hero-subtitle">Discover & Review Incredible Live Music Experiences</p>
+    <div className="animate-fade-in">
+      {/* Hero Section */}
+      <div className="text-center py-16 mb-12">
+        <h1 className="text-6xl font-black text-white mb-4">
+          <span className="text-7xl">🎵</span> BandReviews
+        </h1>
+        <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+          Discover & Review Incredible Live Music Experiences
+        </p>
         
-        <div className="stats-bar">
-          <div className="stat-item">
-            <span className="stat-number">{shows.length}</span>
-            <span className="stat-label">Live Shows</span>
+        {/* Stats */}
+        <div className="flex justify-center space-x-8 mb-8">
+          <div className="glass p-6 text-center">
+            <div className="text-3xl font-bold text-white">{shows.length}</div>
+            <div className="text-white/70 text-sm uppercase tracking-wide">Live Shows</div>
           </div>
-          <div className="stat-item">
-            <span className="stat-number">{getTotalReviews()}</span>
-            <span className="stat-label">Reviews</span>
+          <div className="glass p-6 text-center">
+            <div className="text-3xl font-bold text-white">{getTotalReviews()}</div>
+            <div className="text-white/70 text-sm uppercase tracking-wide">Reviews</div>
           </div>
-          <div className="stat-item">
-            <span className="stat-number">{genres.length}</span>
-            <span className="stat-label">Genres</span>
+          <div className="glass p-6 text-center">
+            <div className="text-3xl font-bold text-white">{genres.length}</div>
+            <div className="text-white/70 text-sm uppercase tracking-wide">Genres</div>
           </div>
-          <div className="stat-item">
-            <span className="stat-number">{shows.flatMap(s => s.bands).length}</span>
-            <span className="stat-label">Artists</span>
+          <div className="glass p-6 text-center">
+            <div className="text-3xl font-bold text-white">{shows.flatMap(s => s.bands).length}</div>
+            <div className="text-white/70 text-sm uppercase tracking-wide">Artists</div>
           </div>
         </div>
       </div>
 
+      {/* Search Filter */}
       <SearchFilter
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -145,64 +136,74 @@ const ShowsList = () => {
         filteredCount={filteredAndSortedShows.length}
       />
       
-      <div className="shows-grid">
+      {/* Shows Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
         {filteredAndSortedShows.map((show, index) => {
           const rating = getShowRating(show);
           const reviewCount = show.reviews?.length || 0;
           
           return (
-            <Link key={show.id} to={`/shows/${show.id}`} style={{ textDecoration: 'none' }}>
-              <div className="show-card" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="show-card-content">
-                  <div className="show-header">
-                    <div className="show-title">{show.title}</div>
-                    {show.ticket_price && (
-                      <div className="show-price">${show.ticket_price}</div>
-                    )}
-                  </div>
-                  
-                  <div className="show-venue">
-                    <span>📍</span> {show.venue?.name}
-                  </div>
-                  
-                  <div className="show-date">
-                    <span>📅</span> {new Date(show.date).toLocaleDateString('en-US', { 
-                      weekday: 'long', 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}
-                    {show.time && <span className="show-time"> at {show.time}</span>}
-                  </div>
-                  
-                  <div className="show-description">{show.description}</div>
-                  
-                  <div className="show-bands">
-                    {show.bands.slice(0, 3).map((band, i) => (
-                      <span key={band.id} className="band-tag">
-                        {getGenreEmoji(band.genre)} {band.name}
-                      </span>
-                    ))}
-                    {show.bands.length > 3 && (
-                      <span className="band-tag more">+{show.bands.length - 3} more</span>
-                    )}
-                  </div>
-                  
-                  <div className="show-meta">
-                    {rating > 0 && (
-                      <div className="show-rating">
-                        <span>⭐</span>
-                        <span>{rating}</span>
-                        <span>({reviewCount})</span>
-                      </div>
-                    )}
-                    
-                    <div className="show-venue-capacity">
-                      {show.venue?.capacity && (
-                        <span>🎫 {show.venue.capacity.toLocaleString()}</span>
-                      )}
+            <Link key={show.id} to={`/shows/${show.id}`} className="group">
+              <div className="card p-6 h-full hover:scale-105 transition-transform duration-300">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                    {show.title}
+                  </h3>
+                  {show.ticket_price && (
+                    <span className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      ${show.ticket_price}
+                    </span>
+                  )}
+                </div>
+                
+                <div className="flex items-center text-gray-600 mb-2">
+                  <span className="mr-2">📍</span>
+                  <span className="font-medium">{show.venue?.name}</span>
+                </div>
+                
+                <div className="flex items-center text-gray-600 mb-4">
+                  <span className="mr-2">📅</span>
+                  <span>{new Date(show.date).toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}</span>
+                  {show.time && <span className="ml-2 text-blue-600 font-medium">at {show.time}</span>}
+                </div>
+                
+                <p className="text-gray-700 mb-4 line-clamp-3">{show.description}</p>
+                
+                {/* Bands */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {show.bands.slice(0, 3).map((band, i) => (
+                    <span key={band.id} className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                      {getGenreEmoji(band.genre)} {band.name}
+                    </span>
+                  ))}
+                  {show.bands.length > 3 && (
+                    <span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                      +{show.bands.length - 3} more
+                    </span>
+                  )}
+                </div>
+                
+                {/* Meta */}
+                <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                  {rating > 0 && (
+                    <div className="flex items-center space-x-1">
+                      <span className="text-yellow-500">⭐</span>
+                      <span className="font-semibold text-gray-900">{rating}</span>
+                      <span className="text-gray-500 text-sm">({reviewCount})</span>
                     </div>
-                  </div>
+                  )}
+                  
+                  {show.venue?.capacity && (
+                    <div className="flex items-center text-gray-500 text-sm">
+                      <span className="mr-1">🎫</span>
+                      <span>{show.venue.capacity.toLocaleString()}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </Link>
@@ -210,14 +211,15 @@ const ShowsList = () => {
         })}
       </div>
       
+      {/* No Results */}
       {filteredAndSortedShows.length === 0 && (
-        <div className="no-results">
-          <div className="no-results-icon">🔍</div>
-          <h3>No shows found</h3>
-          <p>Try adjusting your search criteria</p>
+        <div className="text-center py-16">
+          <div className="text-6xl mb-4">🔍</div>
+          <h3 className="text-2xl font-bold text-white mb-2">No shows found</h3>
+          <p className="text-white/70">Try adjusting your search criteria</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

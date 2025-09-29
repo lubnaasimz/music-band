@@ -9,18 +9,17 @@ import BandsList from './components/pages/BandsList';
 import CreateBand from './components/forms/CreateBand';
 import BackendStatus from './components/common/BackendStatus';
 import ParticleBackground from './components/common/ParticleBackground';
-import './styles/professional.css';
-import './styles/enhanced.css';
+
 
 function App() {
   return (
-    <div className="app-container">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
       <ParticleBackground />
       <Navbar />
       <BackendStatus />
       
-      <div className="main-content">
-        <div className="container">
+      <main className="relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Routes>
             <Route path="/" element={<ShowsList />} />
             <Route path="/shows/:id" element={<ShowDetail />} />
@@ -30,7 +29,7 @@ function App() {
             <Route path="/create-band" element={<CreateBand />} />
           </Routes>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
