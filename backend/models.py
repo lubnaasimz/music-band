@@ -137,7 +137,7 @@ class Review(db.Model):
             'show_id': self.show_id,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
-
+#
 class Musician(db.Model):
     __tablename__ = 'musicians'
     id = db.Column(db.Integer, primary_key=True)

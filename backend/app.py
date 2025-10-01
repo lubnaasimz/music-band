@@ -37,7 +37,6 @@ def create_app():
 
 app = create_app()
 
-# Initialize database on startup
 with app.app_context():
     try:
         db.create_all()
